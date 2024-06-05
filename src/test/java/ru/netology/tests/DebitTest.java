@@ -1,4 +1,4 @@
-package ru.netology;
+package ru.netology.tests;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -14,7 +14,6 @@ import static ru.netology.data.SQLHelper.*;
 
 
 public class DebitTest {
-    private static HeadPage headPage;
 
     @BeforeAll
     public static void setUpAll() {
@@ -68,7 +67,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getIncompleteNumberCardValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле номер карты не заполнено. Остальные поля валидными данными
@@ -77,7 +76,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getEmptyNumberCardValuesMonthYear());
-        debitCardPay.FieldIsRequiredToFillIn();
+        debitCardPay.fieldIsRequiredToFillIn();
     }
 
     // Поле номер месяца заполнено одной цифрой, остальные поля заполнены валидными данными
@@ -86,7 +85,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getValidCardValuesInvalidMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле номер месяца заполнено двумя нулями
@@ -95,7 +94,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getValidCardValuesTwoZeroMonthYear());
-        debitCardPay.ValidityPeriodOfCardIsSpecifiedIncorrectly();
+        debitCardPay.validityPeriodOfCardIsSpecifiedIncorrectly();
     }
 
     // Поле номер месяца заполнено числом больше 12
@@ -104,7 +103,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getValidCardValuesUnrealMonthYear());
-        debitCardPay.ValidityPeriodOfCardIsSpecifiedIncorrectly();
+        debitCardPay.validityPeriodOfCardIsSpecifiedIncorrectly();
     }
 
     // Поле номер месяца заполнен месяцем меньше текущего, будущего года
@@ -127,7 +126,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getCardValidValuesEmptyMonthNextYear());
-        debitCardPay.FieldIsRequiredToFillIn();
+        debitCardPay.fieldIsRequiredToFillIn();
     }
 
     // Поле год не заполнено
@@ -136,7 +135,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getCardValidValuesMonthEmptyYear());
-        debitCardPay.FieldIsRequiredToFillIn();
+        debitCardPay.fieldIsRequiredToFillIn();
     }
 
     // Поле год заполнено двумя нулями
@@ -145,7 +144,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getCardValidValuesMonthTwoZeroYear());
-        debitCardPay.CardExpired();
+        debitCardPay.cardExpired();
     }
 
     // Поле год заполнено +6 лет к текущему году
@@ -154,7 +153,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getCardValidValuesMonthNextSixYear());
-        debitCardPay.ValidityPeriodOfCardIsSpecifiedIncorrectly();
+        debitCardPay.validityPeriodOfCardIsSpecifiedIncorrectly();
     }
 
     // Поле владелец заполнено киррилицей
@@ -163,7 +162,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getKirrilitsaHolderCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле владелец не заполнено
@@ -172,7 +171,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getEmptyHolderCardValidValuesMonthYear());
-        debitCardPay.FieldIsRequiredToFillIn();
+        debitCardPay.fieldIsRequiredToFillIn();
     }
 
     // Поле владелец заполнено не полностью
@@ -181,7 +180,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getOneWordHolderCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле владелец заполнено одним символом на латинице
@@ -190,7 +189,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getOneCharacterHolderCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле владелец заполнено цифрами
@@ -199,7 +198,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getNumbersHolderCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле владелец заполнено спец символами
@@ -208,7 +207,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getCharacterHolderCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле CVC/CVV
@@ -217,7 +216,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getZeroCvcCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле CVC/CVV заполнено двумя цифрами
@@ -226,7 +225,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getTwoNumberCvcCardValidValuesMonthYear());
-        debitCardPay.InvalidFormat();
+        debitCardPay.invalidFormat();
     }
 
     // Поле CVC/CVV не заполнено , остальные поля заполнены валидными данными
@@ -235,7 +234,7 @@ public class DebitTest {
         var headPage = new HeadPage();
         var debitCardPay = headPage.openPaymentByCardPage();
         debitCardPay.buyForm(BankCardDataHelper.getEmptyCvcCardValidValuesMonthYear());
-        debitCardPay.FieldIsRequiredToFillIn();
+        debitCardPay.fieldIsRequiredToFillIn();
     }
 
 }

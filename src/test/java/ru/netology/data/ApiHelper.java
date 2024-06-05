@@ -8,7 +8,7 @@ import ru.netology.card.CardsBank;
 import static io.restassured.RestAssured.given;
 
 
-public class Api {
+public class ApiHelper {
     public static RequestSpecification requestSpecification = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(8080)

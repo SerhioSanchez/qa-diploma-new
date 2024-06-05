@@ -58,16 +58,16 @@ public class FormPaymentCard {
         errorNotification.shouldBe(hidden);
     }
 
-    public void InvalidFormat(){
+    public void invalidFormat(){
         $(byText("Неверный формат")).shouldBe(visible,Duration.ofSeconds(15));
     }
-    public void FieldIsRequiredToFillIn(){
+    public void fieldIsRequiredToFillIn(){
         $(byText("Поле обязательно для заполнения")).shouldBe(visible,Duration.ofSeconds(15));
     }
-    public void ValidityPeriodOfCardIsSpecifiedIncorrectly(){
+    public void validityPeriodOfCardIsSpecifiedIncorrectly(){
         $(byText("Неверно указан срок действия карты")).shouldBe(visible, Duration.ofSeconds(15));
     }
-    public void CardExpired(){
+    public void cardExpired(){
         $(byText("Истёк срок действия карты")).shouldBe(visible, Duration.ofSeconds(15));
     }
 

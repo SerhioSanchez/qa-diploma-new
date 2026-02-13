@@ -8,37 +8,41 @@ import static ru.netology.data.ApiHelper.creditForm;
 import static ru.netology.data.BankCardDataHelper.getCardInValidValuesNextMonthYear;
 import static ru.netology.data.BankCardDataHelper.getCardValidValuesCurrentMonthYear;
 
+/**
+ * API-тесты (через ApiHelper).
+ * Минимальный набор для диплома: 2 статуса (APPROVED/DECLINED) × 2 формы (Оплата/Кредит).
+ */
 public class ApiTest {
 
-    // Проверка карты со статусом "APPROVED" форма оплата по карте
+    // Оплата по карте -> APPROVED
     @Test
-    void cardBuyApproved() {
-        var approvedCard = getCardValidValuesCurrentMonthYear();
-        var status = buyForm(approvedCard);
+    void cardPayApproved() {
+        var card = getCardValidValuesCurrentMonthYear();
+        var status = buyForm(card);
         assertTrue(status.contains("APPROVED"));
     }
 
-    // Проверка карты со статусом "DECLINED" форма оплата по карте
+    // Оплата по карте -> DECLINED
     @Test
-    void cardBuyDeclined() {
-        var approvedCard = getCardInValidValuesNextMonthYear();
-        var status = buyForm(approvedCard);
+    void cardPayDeclined() {
+        var card = getCardInValidValuesNextMonthYear();
+        var status = buyForm(card);
         assertTrue(status.contains("DECLINED"));
     }
 
-    // Проверка карты со статусом "APPROVED" форма "Кредит по данным карты"
+    // Кредит по данным карты -> APPROVED
     @Test
-    void cardBuyCreditApproved() {
-        var declinedCard = getCardValidValuesCurrentMonthYear();
-        var status = creditForm(declinedCard);
+    void creditPayApproved() {
+        var card = getCardValidValuesCurrentMonthYear();
+        var status = creditForm(card);
         assertTrue(status.contains("APPROVED"));
     }
 
-    // Проверка карты со статусом "DECLINED" форма "Кредит по данным карты"
+    // Кредит по данным карты -> DECLINED
     @Test
-    void cardBuyCreditDeclined() {
-        var declinedCard = getCardInValidValuesNextMonthYear();
-        var status = creditForm(declinedCard);
+    void creditPayDeclined() {
+        var card = getCardInValidValuesNextMonthYear();
+        var status = creditForm(card);
         assertTrue(status.contains("DECLINED"));
     }
 }

@@ -315,6 +315,73 @@
 
 *Примечание*: Для перехода по ссылке на страницу покупки тура должен быть запущен SUT и в браузере открыта страница тура http://localhost:8080
 
+# UI.md — UI сценарии и покрытие автотестами
+
+Цель: показать test design и что он реализован КОДОМ (покрытие автотестами).
+
+## 1) Форма "Покупка по карте" (Debit)
+
+### Позитивные
+| ID | Сценарий | Ожидаемо | Автотест |
+|---|---|---|---|
+| D-01 | APPROVED карта | Успех + статус APPROVED в БД | DebitTest#debitPayValidCardApproved |
+| D-02 | DECLINED карта | Отказ + статус DECLINED в БД | DebitTest#debitPayInvalidCardDeclined |
+
+### Негативные / Валидация
+| ID | Сценарий | Ожидаемо | Автотест |
+|---|---|---|---|
+| D-03 | Номер карты неполный | Invalid format | DebitTest#debitPayIncompleteNumberCard |
+| D-04 | Номер карты пустой | Required | DebitTest#debitPayEmptyNumberCard |
+| D-05 | Месяц 1 цифра | Invalid format | DebitTest#debitPayIncompleteMonth_oneDigit |
+| D-06 | Месяц 00 | Validity error | DebitTest#debitPayMonth00 |
+| D-07 | Месяц > 12 | Validity error | DebitTest#debitPayMonthGreaterThan12 |
+| D-08 | Месяц пустой | Required | DebitTest#debitPayEmptyMonth |
+| D-09 | Год пустой | Required | DebitTest#debitPayEmptyYear |
+| D-10 | Год 00 | Expired | DebitTest#debitPayYear00 |
+| D-11 | Год +6 | Validity error | DebitTest#debitPayYearPlus6 |
+| D-12 | Год в прошлом | Expired | DebitTest#debitPayPastYear |
+| D-13 | Holder кириллицей | Invalid format | DebitTest#debitPayHolderKirillitsa |
+| D-14 | Holder пустой | Required | DebitTest#debitPayEmptyHolder |
+| D-15 | Holder 1 слово | Invalid format | DebitTest#debitPayHolderOneWord |
+| D-16 | Holder 1 символ | Invalid format | DebitTest#debitPayHolderOneCharacter |
+| D-17 | Holder цифры | Invalid format | DebitTest#debitPayHolderNumbers |
+| D-18 | Holder спецсимволы | Invalid format | DebitTest#debitPayHolderSpecialCharacters |
+| D-19 | CVC 000 | Invalid format | DebitTest#debitPayCvc000 |
+| D-20 | CVC 2 цифры | Invalid format | DebitTest#debitPayCvcTwoDigits |
+| D-21 | CVC пустой | Required | DebitTest#debitPayEmptyCvc |
+
+## 2) Форма "Кредит по данным карты" (Credit)
+
+### Позитивные
+| ID | Сценарий | Ожидаемо | Автотест |
+|---|---|---|---|
+| C-01 | APPROVED карта | Успех + статус APPROVED в БД | CreditTest#creditPayValidCardApproved |
+| C-02 | DECLINED карта | Отказ + статус DECLINED в БД | CreditTest#creditPayInvalidCardDeclined |
+
+### Негативные / Валидация
+| ID | Сценарий | Ожидаемо | Автотест |
+|---|---|---|---|
+| C-03 | Номер карты неполный | Invalid format | CreditTest#creditPayIncompleteNumberCard |
+| C-04 | Номер карты пустой | Required | CreditTest#creditPayEmptyNumberCard |
+| C-05 | Месяц 1 цифра | Invalid format | CreditTest#creditPayIncompleteMonth_oneDigit |
+| C-06 | Месяц 00 | Validity error | CreditTest#creditPayMonth00 |
+| C-07 | Месяц > 12 | Validity error | CreditTest#creditPayMonthGreaterThan12 |
+| C-08 | Месяц пустой | Required | CreditTest#creditPayEmptyMonth |
+| C-09 | Год пустой | Required | CreditTest#creditPayEmptyYear |
+| C-10 | Год 00 | Expired | CreditTest#creditPayYear00 |
+| C-11 | Год +6 | Validity error | CreditTest#creditPayYearPlus6 |
+| C-12 | Год в прошлом | Expired | CreditTest#creditPayPastYear |
+| C-13 | Holder кириллицей | Invalid format | CreditTest#creditPayHolderKirillitsa |
+| C-14 | Holder пустой | Required | CreditTest#creditPayEmptyHolder |
+| C-15 | Holder 1 слово | Invalid format | CreditTest#creditPayHolderOneWord |
+| C-16 | Holder 1 символ | Invalid format | CreditTest#creditPayHolderOneCharacter |
+| C-17 | Holder цифры | Invalid format | CreditTest#creditPayHolderNumbers |
+| C-18 | Holder спецсимволы | Invalid format | CreditTest#creditPayHolderSpecialCharacters |
+| C-19 | CVC 000 | Invalid format | CreditTest#creditPayCvc000 |
+| C-20 | CVC 2 цифры | Invalid format | CreditTest#creditPayCvcTwoDigits |
+| C-21 | CVC пустой | Required | CreditTest#creditPayEmptyCvc |
+
+
 ### *API-тестирование*
 **1.** Отправка POST запроса платежа с валидными данными и карты со статусом "APPROVED" на URL-адрес http://localhost:8080/api/v1/pay 
    

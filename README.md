@@ -135,3 +135,51 @@ java -jar aqa-shop.jar
 ```bash
 ./gradlew allureServe
 ```
+# QA Diploma — UI автотесты (Selenide) + проверки БД
+
+## О проекте
+Проект содержит UI-автотесты для учебного приложения оплаты:
+- Покупка по карте (Debit)
+- Кредит по данным карты (Credit)
+
+Проверяется:
+- UI-результат операции
+- валидация полей формы
+- статус записи в БД
+
+## Технологии
+- Java 11
+- Gradle
+- JUnit 5
+- Selenide
+- Allure
+- Docker / Docker Compose
+
+## Запуск окружения
+```bash
+docker-compose up -d
+```
+
+## Запуск приложения
+```bash
+cd artifacts
+java -jar aqa-shop.jar
+```
+
+Если в проекте требуется gate URL, используйте настройки проекта / application.properties.
+
+## Запуск тестов
+```bash
+./gradlew clean test -Dsut.url=http://localhost:8080
+```
+
+## Allure
+```bash
+./gradlew allureReport
+```
+
+или
+
+```bash
+./gradlew allureServe
+```

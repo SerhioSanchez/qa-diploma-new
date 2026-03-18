@@ -3,27 +3,13 @@ package ru.netology.tests;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
-
 import ru.netology.page.HeadPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.data.SQLHelper.cleanDatabase;
-import static ru.netology.data.SQLHelper.getCreditCardStatus;
-import static ru.netology.data.BankCardDataHelper.getCardInValidValuesNextMonthYear;
-import static ru.netology.data.BankCardDataHelper.getCardValidValuesCurrentMonthYear;
+import static ru.netology.data.SQLHelper.*;
 
-/**
- * UI-тесты: форма "Кредит по данным карты".
- * Важно: НЕ хардкодим URL — берем из system property:
- * -Dapp.url=http://localhost:8080
- */
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CreditTest {
-
-    private static String baseUrl() {
-        return System.getProperty("app.url", "http://localhost:8080");
-    }
 
     @BeforeAll
     static void setUpAll() {
@@ -36,8 +22,9 @@ public class CreditTest {
     }
 
     @BeforeEach
-    void openApp() {
-        open(baseUrl());
+    void openPage() {
+        String baseUrl = System.getProperty("sut.url", "http://localhost:8080");
+        open(baseUrl);
     }
 
     @AfterEach
@@ -46,28 +33,71 @@ public class CreditTest {
     }
 
     @Test
-    @Order(1)
-    void creditApproved() {
+    void creditApproved_validCard_shouldShowSuccess_andWriteApprovedToDb() {
         var headPage = new HeadPage();
-        var creditPage = headPage.openPaymentByCreditPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
 
-        creditPage.buyForm(getCardValidValuesCurrentMonthYear());
-        creditPage.operationIsApprovedByBank();
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getCardValidValuesCurrentMonthYear());
+        creditCardPay.operationWasApprovedByBank();
 
         var status = getCreditCardStatus();
         assertEquals("APPROVED", status);
     }
 
     @Test
-    @Order(2)
-    void creditDeclined() {
+    void creditDeclined_declinedCard_shouldShowError_andWriteDeclinedToDb() {
         var headPage = new HeadPage();
-        var creditPage = headPage.openPaymentByCreditPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
 
-        creditPage.buyForm(getCardInValidValuesNextMonthYear());
-        creditPage.bankRefusedToCarryOutOperation();
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getCardInValidValuesNextMonthYear());
+        creditCardPay.bankRefusedToCarryOutOperation();
 
         var status = getCreditCardStatus();
         assertEquals("DECLINED", status);
+    }
+
+    @Test
+    void credit_emptyForm_shouldShowRequiredFieldErrors() {
+        var headPage = new HeadPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
+
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getEmptyNumberCardValidValuesMonthYear());
+        creditCardPay.fieldsIsRequiredToFillIn();
+    }
+
+    @Test
+    void credit_invalidMonth00_shouldShowValidationError() {
+        var headPage = new HeadPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
+
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getValidCardValuesTwoZeroMonthYear());
+        creditCardPay.validityPeriodOfCardIsSpecifiedIncorrectly();
+    }
+
+    @Test
+    void credit_invalidMonth13_shouldShowValidationError() {
+        var headPage = new HeadPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
+
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getValidCardValuesUnrealMonthYear());
+        creditCardPay.validityPeriodOfCardIsSpecifiedIncorrectly();
+    }
+
+    @Test
+    void credit_yearInPast_shouldShowValidationError() {
+        var headPage = new HeadPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
+
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getValidCardValuesMinusMonthNextYear());
+        creditCardPay.cardExpired();
+    }
+
+    @Test
+    void credit_emptyCvc_shouldShowRequiredError() {
+        var headPage = new HeadPage();
+        var creditCardPay = headPage.openPaymentByCreditPage();
+
+        creditCardPay.buyForm(ru.netology.data.BankCardDataHelper.getEmptyCvcCardValidValuesMonthYear());
+        creditCardPay.invalidFormat();
     }
 }
